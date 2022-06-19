@@ -1,77 +1,107 @@
-import cv2
-import numpy as np
-from PIL import Image, ImageDraw, ImageOps, ImageFont
+import cv2, os, argparse
 
-# Characters used for Mapping to Pixels
-Character = {
-    "standard": "@%#*+=-:. ",
-    "complex": "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'. ",
-}
+from PIL import Image
 
-def get_data(mode):
-    font = ImageFont.truetype("fonts/DejaVuSansMono-Bold.ttf", size=20)
-    scale = 2
-    char_list = Character[mode]
-    return char_list, font, scale
+from asciifyImg import asciify
+from sketchify import skechify
 
-# Making Background Black or White
-bg = "white"
-if bg == "white":
-    bg_code = (255, 255, 255)
-elif bg == "black":
-    bg_code = (0, 0, 0)
+def save_ascii_vid(input, output, s, bg, gs):
+    """
+        function to convert an video into ASCII art
+        inp: input file name - str
+        oup: output file name - str
+        s: skechify - bool => True: the frames will be skechified and then ascifiied
+        bg: background color of ascii art - int => 1:white ,0:black
+        gs: grayscale - bool => True: grayscale sketch(pencil like)
+        returns output filename - oup
+    """
+    cap = cv2.VideoCapture(input)
+    # extracting frames from video
+    ret, frame = cap.read()
+    inp = "inp-img.png"
+    out = "out-img.png"
+    skout = "out-skch.png"
+    # copying the frame data into an image
+    cv2.imwrite(inp, frame)
+    while (os.path.exists(inp)) == False:
+        cap = cv2.VideoCapture(input)
+        ret, frame = cap.read()
+        cv2.imwrite(inp, frame)
 
-# Getting the character List, Font and Scaling characters for square Pixels
-char_list, font, scale = get_data("complex")
-num_chars = len(char_list)
-num_cols = 300
+    chk = 1
 
-# Reading Input Image
-image = cv2.imread("in1.png")
+    if s:
+        skout=skechify(inp, out, gs)
+        asciify(skout, out, bg)
+    else:
+        asciify(inp, out, bg)
+    op = Image.open(out)
 
-# Extracting height and width from Image
-height, width, _ = image.shape
+    frame_width, frame_height = op.size
+    size = (frame_width, frame_height)
+    res = cv2.VideoWriter(output, cv2.VideoWriter_fourcc(*"mp4v"), 15, size)
+    osrc = cv2.imread(out)
 
-# Defining height and width of each cell==pixel
-cell_w = width / num_cols
-cell_h = scale * cell_w
-num_rows = int(height / cell_h)
+    res.write(osrc)
+    print("frame_count: ")
+    while ret:
+        print("%d..." % chk)
+        ret, frame = cap.read()
+        if frame is None:
+            break
+        cv2.imwrite(inp, frame)
+        if s:
+            skout=skechify(inp, out, gs)
+            asciify(skout, out, bg)
+        else:
+            asciify(inp, out, bg)
+        osrc = cv2.imread(out)
+        cv2.imshow("Frame", osrc)
+        # writing the asciified/skechified output to video's frames
+        res.write(osrc)
+        chk += 1
+    res.release()
+    return output
 
-# Calculating Height and Width of the output Image
-char_width, char_height = font.getsize("A")
-out_width = char_width * num_cols
-out_height = scale * char_height * num_rows
+# funciton to parse command line arguments
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("filein", help="File name of the input image.")
+    parser.add_argument("fileout", help="File name of the output image.")
+    parser.add_argument(
+        "-bg",
+        "--background",
+        help="flag to set the background color of ascii, white: 1, black: 0",
+        type=int,
+        default=1,
+    )
+    parser.add_argument(
+        "-s",
+        "--skechify",
+        help="flag to set skechify the video",
+        type=bool,
+        default=False,
+    )
+    parser.add_argument(
+        "-gs",
+        "--pencilsketch",
+        help="to make the sketch grayscale(like a pencil sketch)",
+        type=bool,
+        default=False,
+    )
+    return parser.parse_args()
 
-# Making a new Image using PIL
-out_image = Image.new("RGB", (out_width, out_height), bg_code)
-draw = ImageDraw.Draw(out_image)
 
-# mapping for rgb
-
-for i in range(num_rows):
-    for j in range(num_cols):
-        partial_image = image[
-            int(i * cell_h) : min(int((i + 1) * cell_h), height),
-            int(j * cell_w) : min(int((j + 1) * cell_w), width),
-            :,
-        ]
-        partial_avg_color = np.sum(np.sum(partial_image, axis=0), axis=0) / (
-            cell_h * cell_w
-        )
-        partial_avg_color = tuple(partial_avg_color.astype(np.int32).tolist())
-        line = char_list[
-            min(int(np.mean(partial_image) * num_chars / 255), num_chars - 1)
-        ]
-        draw.text(
-            (j * char_width, i * char_height), line, fill=partial_avg_color, font=font
-        )
-
-# Inverting Image and removing excess borders
-if bg == "white":
-    cropped_image = ImageOps.invert(out_image).getbbox()
-elif bg == "black":
-    cropped_image = out_image.getbbox()
-
-# Saving the new Image
-out_image = out_image.crop(cropped_image)
-out_image.save("./data/output2.png")
+if __name__ == "__main__":
+    args = parse_args()
+    inp = args.filein
+    oup = args.fileout
+    bg = args.background
+    f = args.skechify
+    gs = args.pencilsketch
+    ret = save_ascii_vid(inp, oup, f, bg, gs)
+    if os.path.exists("inp-img.png"):
+        os.remove("inp-img.png")
+    if os.path.exists("out-img.png"):
+        os.remove("out-img.png")
+    print("The video was successfully saved at "+ ret)
