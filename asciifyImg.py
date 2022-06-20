@@ -16,6 +16,10 @@ def get_data(mode):
     char_list = Character[mode]
     return char_list, font, scale
 
+# Getting the character List, Font and Scaling characters for square Pixels
+char_list, font, scale = get_data("complex")
+num_chars = len(char_list)
+num_cols = 500
 
 def asciify(inp, oup, bg):
     """
@@ -36,12 +40,6 @@ def asciify(inp, oup, bg):
     # Extracting height and width from Image
     height, width, _ = image.shape
 
-    # Getting the character List, Font and Scaling characters for square Pixels
-    char_list, font, scale = get_data("complex")
-    num_chars = len(char_list)
-    # num_cols =
-    num_cols = 300
-
     # Defining height and width of each cell==pixel
     cell_w = width / num_cols
     cell_h = scale * cell_w
@@ -58,6 +56,7 @@ def asciify(inp, oup, bg):
 
     # changing the color scheme to match with that of PIL(opencv: BGR to PIL: RGB)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    
     # mapping for rgb
     for i in range(num_rows):
         for j in range(num_cols):

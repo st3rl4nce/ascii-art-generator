@@ -30,7 +30,7 @@ def save_ascii_vid(input, output, s, bg, gs):
 
     chk = 1
 
-    if s:
+    if s==True:
         skout=skechify(inp, out, gs)
         asciify(skout, out, bg)
     else:

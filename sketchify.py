@@ -8,12 +8,12 @@ def skechify(inp, oup, gs):
     function to convert an image into a sketch
     inp: input file name - str
     oup: output file name - str
-    gs: grayscale - bool => True: grayscale sketch(pencil like)
+    gs: grayscale - int => 1: grayscale sketch(pencil like)
     returns output filename - oup
     """
     img = cv2.imread(inp)
     gray = img
-    if gs == True:
+    if gs==1:
         gray = cv2.cvtColor(img, COLOR_BGR2GRAY)
     inv = cv2.bitwise_not(gray)
     blur = cv2.GaussianBlur(inv, (111, 111), 0)
@@ -32,8 +32,8 @@ def parse_args():
         "-a",
         "--asciify",
         help="flag to set if we want to asciify the result or not, defaults to true",
-        type=bool,
-        default=True,
+        type=int,
+        default=1,
     )
     parser.add_argument(
         "-bg",
@@ -44,10 +44,10 @@ def parse_args():
     )
     parser.add_argument(
         "-gs",
-        "--pencilsketch",
+        "--grayscale",
         help="to make the sketch grayscale(like a pencil sketch)",
-        type=bool,
-        default=False,
+        type=int,
+        default=0,
     )
     return parser.parse_args()
 
@@ -56,12 +56,12 @@ if __name__ == "__main__":
     args = parse_args()
     inp = args.filein
     oup = args.fileout
-    p = args.pencilsketch
+    gs = args.grayscale
     bg = args.background
-    chk = args.asciify
-    if chk:
-        trgt = skechify(inp, oup, p)
+    a = args.asciify
+    if a==1:
+        trgt = skechify(inp, oup, gs)
         ret = asciify(trgt, oup, bg)
     else:
-        ret = skechify(inp, oup, p)
+        ret = skechify(inp, oup, gs)
     print("The file has been succesfully saved at " + ret)
