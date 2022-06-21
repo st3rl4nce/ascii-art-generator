@@ -11,6 +11,7 @@ How about images?
  For this some basic image processing techniques are used to convert an image
  or video(.mp4) into an ASCII art. We can also convert images or videos into asciified sketches using the same. 
 ## How to run
+### Video Demo [click](https://drive.google.com/file/d/1QlKpSIpOsmEZeRyn4cJlG8BygSR632_s/view?usp=sharing)
 To run this on your local machine, clone the repo:
 	
 	git clone https://github.com/st3rl4nce/ascii-art-generator.git
@@ -85,8 +86,6 @@ flags:
 	Here "../data/inp_im1.jpeg" "../data/out_im1.png" are just the relative paths of the input and output files. 
 	
 	Any file can be specified as input and output as long as it is an image file. 
-
-### Video Demo [click](https://drive.google.com/file/d/1-EQms_HS6CXbx614Hw_un68ZqYHQlKcj/view?usp=sharing)
 	
 ## Internal working of the project   
 ### ASCIIfying an image: 
