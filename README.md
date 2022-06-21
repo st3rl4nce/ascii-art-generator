@@ -31,12 +31,15 @@ Flags:
 		  -bg=0:black, -bg=1:white(default).
 		  
 	-s : To specify whether the video should be skechified before asciifying => 
-	     -s=True:skechify+asciify, -s=False:just asciify(default). 
+	     -s=1:skechify+asciify, -s=0:just asciify(default). 
 	
 	-gs : To specify(if skechified)whether the skechified video should be grayscale
 		  (pencil sketch like) or colored=> 
-	  	  -gs=True:grayscale, -gs=False:color(default).
-	  
+	  	  -gs=1:grayscale, -gs=0:color(default).
+	  	  
+	-rs : To resize the output to match the resolution of the input=> 
+		  -rs=1:resize to match source, -rs=0 no resize(default).
+		  
 	Here "./data/inp_v.mp4", "./data/out.mp4" are just the relative paths of the input and output files. 
 	Any video input and output can be specified as long as the output is of mp4 format. 
 
@@ -50,11 +53,11 @@ flags:
 	Different optional flags can be used to change the way the output is rendered:
 	
 	-a : To specify whether the skechified image should be asciified or not =>
-			-a=False: Only Skechify, -a=True: skechify+asciify(default). 
+			-a=0: Only Skechify, -a=1: skechify+asciify(default). 
 		  
 	-gs : To specify(if skechified)whether the skechified video should be grayscale
 		  (pencil sketch like) or colored=> 
-	  	  -gs=True:grayscale, -gs=False:color(default).
+	  	  -gs=1:grayscale, -gs=0:color(default).
 	  	  
 	-bg : To specify the background color of the output asciified sketch => 
 		  -bg=0:black, -bg=1:white(default).
@@ -73,6 +76,9 @@ flags:
 	
 	-bg : To specify the background color of the output ascii image => 
 		  -bg=0:black, -bg=1:white(default).
+
+	-rs : To resize the output to match the resolution of the input=> 
+		  -rs=1:resize to match source, -rs=0 no resize(default).
 		  	  
 	Here "./data/sample.jpeg" "./data/sampleout.png" are just the relative paths of the input and output files. 
 	
@@ -116,9 +122,9 @@ flags:
     
 4. Using ```VideoCapture``` package from OpenCV we will access each frame and save it to our temporary folder.
 
-5. Now, we will extract the frame and save it as an image and asciify/skechify/both it(from previous sections), and write the output to the video using ```VideoWriter``` package.
+5. Now, we will extract the frames asciify/skechify/both them and save them in a ```temp``` folder.
 
-6. We could also have saved all the frame's outputs and combined them at the end to make the video, but it would have taken a high amount of space. Here, we are using only two temporary image files, which will be deleted at the end(using functions from ```os``` library). 
+6. Then, we will start reading the images from the ```temp``` folder and write them to the specified output video using the ```VideoWriter``` package. 
 
 ## Demo
 ### ASCIIfying an image:
@@ -126,6 +132,20 @@ flags:
 ![inp_im1](r_data/inp_im1.jpeg "original") &emsp; ![oup_im1](r_data/oup_im1.png)
 		
 ### Sketchifying an image:
-![inp_im2](r_data/inp_im2.jpeg) &emsp; ![oup1_im2](r_data/oup1_im2.png) &emsp; ![oup2_im2](r_data/oup2_im2.png)
-## Your learning takeaways from the project  
+![inp_im2](r_data/inp_im2.jpeg) &emsp; ![oup1_im2](r_data/oup1_im2.png)  
+
+![oup2_im2](r_data/oup2_im2.png) &emsp; ![oup2_im2](r_data/oup3_im2.png)
+
+### ASCIIfying a Video:
+![inp_v](r_data/inp_v2.gif) &emsp; ![out_v](r_data/out_v2.gif)
+
+## Key learning takeaways from this project
+- Basic idea of how images are stored.  
+- Extracting pixels from images and manipulating them to edit the images.  
+- Extracting frames from videos and manipulating them to edit the videos as a whole. 
+- An intro on basic features of ```openCV``` for image and video processing. 
+  
 ## The  resources/references you used while working on the project
+- [https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html](https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html)
+- [https://blog.waffles.space/2017/03/01/ascii-sketch/#fnref:2](https://blog.waffles.space/2017/03/01/ascii-sketch/#fnref:2)
+- [https://stackoverflow.com/](https://stackoverflow.com/)
