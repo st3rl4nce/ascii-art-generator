@@ -14,6 +14,7 @@ How about images?
 To run this on your local machine, clone the repo:
 	
 	git clone https://github.com/st3rl4nce/ascii-art-generator.git
+	cd ascii-art-generator
 ### Install Dependencies
 run:
 
@@ -21,6 +22,7 @@ run:
 ### Asciified-Video
 run:
 
+	cd src
 	python ascii.py "./data/inp_v.mp4" "./data/out.mp4"
 
 Flags:
