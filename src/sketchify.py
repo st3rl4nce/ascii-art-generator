@@ -49,6 +49,13 @@ def parse_args():
         type=int,
         default=0,
     )
+    parser.add_argument(
+        "-rs",
+        "--resize",
+        help="flag to set the resize to source true or false, resize to input: 1, else: 0(default) ",
+        type=int,
+        default=0,
+    )
     return parser.parse_args()
 
 
@@ -58,10 +65,11 @@ if __name__ == "__main__":
     oup = args.fileout
     gs = args.grayscale
     bg = args.background
+    rs = args.resize
     a = args.asciify
     if a == 1:
         trgt = skechify(inp, oup, gs)
-        ret = asciify(trgt, oup, bg)
+        ret = asciify(trgt, oup, bg,rs)
     else:
         ret = skechify(inp, oup, gs)
     print("The file has been succesfully saved at " + ret)
