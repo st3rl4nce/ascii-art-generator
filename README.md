@@ -23,7 +23,7 @@ run:
 ### Asciified-Video
 run:
 
-	python ascii.py "../data/inp_v1.mp4" "../data/out.mp4"
+	python ascii.py "../data/inp_vs.mp4" "../data/out_vsnew.mp4"
 
 Flags:
 		
