@@ -19,11 +19,11 @@ To run this on your local machine, clone the repo:
 run:
 
 	pip install -r requirements.txt
+	cd src
 ### Asciified-Video
 run:
 
-	cd src
-	python ascii.py "./data/inp_v.mp4" "./data/out.mp4"
+	python ascii.py "../data/inp_v1.mp4" "../data/out.mp4"
 
 Flags:
 		
@@ -42,13 +42,13 @@ Flags:
 	-rs : To resize the output to match the resolution of the input=> 
 		  -rs=1:resize to match source, -rs=0 no resize(default).
 		  
-	Here "./data/inp_v.mp4", "./data/out.mp4" are just the relative paths of the input and output files. 
+	Here "../data/inp_v1.mp4", "../data/out.mp4" are just the relative paths of the input and output files. 
 	Any video input and output can be specified as long as the output is of mp4 format. 
 
 ### Skechified Image
 run:
 
-	python sketchify.py "./data/sample.jpeg" "./data/sampleout.png" 
+	python sketchify.py "../data/inp_im1.jpeg" "../data/out_im1.png" 
 
 flags:
 		
@@ -64,13 +64,13 @@ flags:
 	-bg : To specify the background color of the output asciified sketch => 
 		  -bg=0:black, -bg=1:white(default).
 	  
-	Here "./data/sample.jpeg", "./data/sampleout.png" are just the relative paths of the input and output files. 
+	Here "../data/inp_im1.jpeg" "../data/out_im1.png" are just the relative paths of the input and output files. 
 	
 	Any file can be specified as input and output as long as it is an image file. 
 ### Asciified Images
 run:
 
-	python asciifyImg.py "./data/sample.jpeg" "./data/sampleout.png"
+	python asciifyImg.py "../data/inp_im1.jpeg" "../data/out_im1.png"
 
 flags:
 		
@@ -82,7 +82,7 @@ flags:
 	-rs : To resize the output to match the resolution of the input=> 
 		  -rs=1:resize to match source, -rs=0 no resize(default).
 		  	  
-	Here "./data/sample.jpeg" "./data/sampleout.png" are just the relative paths of the input and output files. 
+	Here "../data/inp_im1.jpeg" "../data/out_im1.png" are just the relative paths of the input and output files. 
 	
 	Any file can be specified as input and output as long as it is an image file. 
 	
